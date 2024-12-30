@@ -5,8 +5,8 @@ from posts.models import Posts
 from .models import Comments
 
 # 댓글 목록
-def get_comments_list(post):
-    comments = Comments.objects.filter(post=post).order_by('-created_at')
+def get_comments(post_id):
+    comments = Comments.objects.filter(post=post_id).order_by('-created_at')
     comments_list = []
     for comment in comments:
         comments_list.append({
@@ -20,7 +20,7 @@ def get_comments_list(post):
     return comments_list
 
 # 댓글 등록
-def comments_create(request):
+def create_comment(request):
     if not request.user.is_authenticated:
         return JsonResponse({'result': 'error', 'message': '로그인 후 이용해주세요.'})
     
@@ -47,12 +47,12 @@ def comments_create(request):
         comment.save()
         
         # 댓글 목록
-        comments_list = get_comments_list(post)
+        comments = get_comments(post_id)
 
-        return JsonResponse({'result': 'success', 'comments': comments_list})
+        return JsonResponse({'result': 'success', 'comments': comments})
 
 # 댓글 수정
-def comments_update(request, comment_id):
+def update_comment(request, comment_id):
     if not request.user.is_authenticated:
         return JsonResponse({'result': 'error', 'message': '로그인 후 이용해주세요.'})
     
@@ -86,12 +86,12 @@ def comments_update(request, comment_id):
         comment.save()
 
         # 댓글 목록
-        comments_list = get_comments_list(post)
+        comments = get_comments(post_id)
 
-        return JsonResponse({'result': 'success', 'comments': comments_list})
+        return JsonResponse({'result': 'success', 'comments': comments})
 
 # 댓글 삭제
-def comments_delete(request, comment_id):
+def delete_comment(request, comment_id):
     if not request.user.is_authenticated:
         return JsonResponse({'result': 'error', 'message': '로그인 후 이용해주세요.'})
     
@@ -123,6 +123,6 @@ def comments_delete(request, comment_id):
         comment.delete()
         
         # 댓글 목록
-        comments_list = get_comments_list(post)
+        comments = get_comments(post_id)
 
-        return JsonResponse({'result': 'success', 'comments': comments_list})
+        return JsonResponse({'result': 'success', 'comments': comments})

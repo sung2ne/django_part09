@@ -58,7 +58,7 @@ def create_post(request):
 @login_required(login_url='auth:login')
 def get_post(request, post_id):
     post = get_object_or_404(Posts, id=post_id)
-    comments = Comments.objects.filter(post=post).order_by('-created_at')
+    comments = Comments.objects.filter(post=post_id).order_by('-created_at')
     return render(request, 'posts/read.html', {'post': post, 'comments': comments})
 
 # 게시글 수정

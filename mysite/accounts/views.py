@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from .forms import DeleteAccountForm, FindUsernameForm, LoginForm, ResetPasswordForm, SignupForm, UpdatePasswordForm, UpdateProfileForm
 
 # 회원가입
-def accounts_signup(request):
+def register_account(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
 
@@ -30,10 +30,10 @@ def accounts_signup(request):
         else:
             messages.error(request, '회원가입에 실패했습니다.')
 
-    return render(request, 'accounts/signup.html', {'form': form, 'message_class': 'col-4 mx-auto'})
+    return render(request, 'accounts/register.html', {'form': form, 'message_class': 'col-4 mx-auto'})
 
 # 로그인
-def accounts_login(request):
+def login_account(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
     
@@ -60,18 +60,18 @@ def accounts_login(request):
     return render(request, 'accounts/login.html', {'form': form, 'message_class': 'col-4 mx-auto'})
 
 # 로그아웃
-def accounts_logout(request):
+def logout_account(request):
     logout(request)
     return redirect('auth:login')
 
 # 프로필 보기
 @login_required(login_url='auth:login')
-def accounts_profile(request):    
+def get_profile(request):    
     return render(request, 'accounts/profile.html', {'message_class': 'col-4 mx-auto'})
 
 # 프로필 수정
 @login_required(login_url='auth:login')
-def accounts_update_profile(request):
+def update_profile(request):
     form = UpdateProfileForm(instance=request.user)
 
     if request.method == 'POST':
@@ -89,7 +89,7 @@ def accounts_update_profile(request):
 
 # 비밀번호 수정
 @login_required(login_url='auth:login')
-def accounts_update_password(request):
+def update_password(request):
     form = UpdatePasswordForm()
 
     if request.method == 'POST':
@@ -116,7 +116,7 @@ def accounts_update_password(request):
     return render(request, 'accounts/update_password.html', {'form': form, 'message_class': 'col-4 mx-auto'})
 
 # 아이디 찾기
-def accounts_find_username(request):
+def find_username(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
     
@@ -139,7 +139,7 @@ def accounts_find_username(request):
     return render(request, 'accounts/find_username.html', {'form': form, 'message_class': 'col-4 mx-auto'})
 
 # 비밀번호 초기화
-def accounts_reset_password(request):
+def reset_password(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
     
@@ -166,7 +166,7 @@ def accounts_reset_password(request):
 
 # 탈퇴
 @login_required(login_url='auth:login')
-def accounts_delete_account(request):
+def delete_account(request):
     form = DeleteAccountForm()
 
     if request.method == 'POST':
