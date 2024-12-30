@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 
-from .forms import DeleteAccountForm, FindUsernameForm, LoginForm, ResetPasswordForm, RegisterForm, UpdatePasswordForm, UpdateProfileForm
+from .forms import AccountDeleteForm, UsernameFindForm, LoginForm, PasswordResetForm, RegisterForm, PasswordUpdateForm, ProfileUpdateForm
 
 # 회원가입
 def register_account(request):
@@ -72,10 +72,10 @@ def get_profile(request):
 # 프로필 수정
 @login_required(login_url='auth:login')
 def update_profile(request):
-    form = UpdateProfileForm(instance=request.user)
+    form = ProfileUpdateForm(instance=request.user)
 
     if request.method == 'POST':
-        form = UpdateProfileForm(request.POST, instance=request.user)
+        form = ProfileUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
@@ -90,10 +90,10 @@ def update_profile(request):
 # 비밀번호 수정
 @login_required(login_url='auth:login')
 def update_password(request):
-    form = UpdatePasswordForm()
+    form = PasswordUpdateForm()
 
     if request.method == 'POST':
-        form = UpdatePasswordForm(request.POST)
+        form = PasswordUpdateForm(request.POST)
         if form.is_valid():
             password = form.cleaned_data['password']
             password1 = form.cleaned_data['password1']
@@ -120,10 +120,10 @@ def find_username(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
     
-    form = FindUsernameForm()
+    form = UsernameFindForm()
 
     if request.method == 'POST':
-        form = FindUsernameForm(request.POST)
+        form = UsernameFindForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             email = form.cleaned_data['email']
@@ -143,10 +143,10 @@ def reset_password(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
     
-    form = ResetPasswordForm()
+    form = PasswordResetForm()
 
     if request.method == 'POST':
-        form = ResetPasswordForm(request.POST)
+        form = PasswordResetForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             email = form.cleaned_data['email']
@@ -167,10 +167,10 @@ def reset_password(request):
 # 탈퇴
 @login_required(login_url='auth:login')
 def delete_account(request):
-    form = DeleteAccountForm()
+    form = AccountDeleteForm()
 
     if request.method == 'POST':
-        form = DeleteAccountForm(request.POST)
+        form = AccountDeleteForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             email = form.cleaned_data['email']
