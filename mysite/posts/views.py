@@ -16,7 +16,7 @@ from .forms import PostCreateForm, PostUpdateForm
 
 # 게시글 등록
 @login_required(login_url='auth:login')
-def posts_create(request):
+def create_post(request):
     form = PostCreateForm()
     
     if request.method == 'POST':
@@ -56,14 +56,14 @@ def posts_create(request):
 
 # 게시글 보기
 @login_required(login_url='auth:login')
-def posts_read(request, post_id):
+def get_post(request, post_id):
     post = get_object_or_404(Posts, id=post_id)
     comments = Comments.objects.filter(post=post).order_by('-created_at')
     return render(request, 'posts/read.html', {'post': post, 'comments': comments})
 
 # 게시글 수정
 @login_required(login_url='auth:login')
-def posts_update(request, post_id):
+def update_post(request, post_id):
     post = get_object_or_404(Posts, id=post_id) 
        
     if post.created_by != request.user:
@@ -127,7 +127,7 @@ def posts_update(request, post_id):
 
 # 게시글 삭제
 @login_required(login_url='auth:login')
-def posts_delete(request, post_id):
+def delete_post(request, post_id):
     post = get_object_or_404(Posts, id=post_id)
     
     if post.created_by != request.user:
@@ -147,7 +147,7 @@ def posts_delete(request, post_id):
 
 # 게시글 목록
 @login_required(login_url='auth:login')
-def posts_list(request):    
+def get_posts(request):    
     page = request.GET.get('page', '1') 
     searchType = request.GET.get('searchType')
     searchKeyword = request.GET.get('searchKeyword')
