@@ -8,7 +8,7 @@ from django.contrib import messages
 # 사용자 목록
 @login_required(login_url='auth:login')
 @user_passes_test(lambda u: u.is_superuser)
-def users_list(request):
+def get_users(request):
     page = request.GET.get('page', '1') 
     searchType = request.GET.get('searchType')
     searchKeyword = request.GET.get('searchKeyword')
@@ -43,14 +43,14 @@ def users_list(request):
 # 사용자 보기
 @login_required(login_url='auth:login')
 @user_passes_test(lambda u: u.is_superuser)
-def users_read(request, user_id):
+def get_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     return render(request, 'users/read.html', {'user': user})
 
 # 사용자 삭제
 @login_required(login_url='auth:login')
 @user_passes_test(lambda u: u.is_superuser)
-def users_delete(request, user_id):
+def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if user.is_superuser:
         messages.error(request, '관리자는 삭제할 수 없습니다.')
