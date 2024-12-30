@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 # 회원가입 폼
-class SignupForm(forms.ModelForm):
+class RegisterForm(forms.ModelForm):
     username = forms.CharField(required=False)
     password1 = forms.CharField(required=False)
     password2 = forms.CharField(required=False)

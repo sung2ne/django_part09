@@ -6,17 +6,17 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 
-from .forms import DeleteAccountForm, FindUsernameForm, LoginForm, ResetPasswordForm, SignupForm, UpdatePasswordForm, UpdateProfileForm
+from .forms import DeleteAccountForm, FindUsernameForm, LoginForm, ResetPasswordForm, RegisterForm, UpdatePasswordForm, UpdateProfileForm
 
 # 회원가입
 def register_account(request):
     if request.user.is_authenticated:
         return redirect('auth:profile')
 
-    form = SignupForm()
+    form = RegisterForm()
 
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
                 username=form.cleaned_data["username"],
